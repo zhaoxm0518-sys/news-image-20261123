@@ -5,7 +5,7 @@
 // that picture where the harness looks for the result, so what gets
 // judged is exactly the image that was rendered for the day.
 
-import { copyFile, mkdir, stat } from "node:fs/promises";
+import { copyFile, mkdir, rm, stat } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -41,7 +41,22 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  console.log(`wrote ${destination} (${picture.size} bytes)`);
+  // Verify the copy actually landed whole: the destination must be a
+  // regular file of exactly the same size as the source. A short or
+  // empty write must never pass as a finished entry, so remove the bad
+  // copy and fail loudly instead of reporting success.
+  const written = await stat(destination).catch(() => null);
+  if (written === null || !written.isFile() || written.size !== picture.size) {
+    const got = written === null ? "missing" : `${written.size} bytes`;
+    await rm(destination, { force: true }).catch(() => {});
+    console.error(
+      `copy incomplete: ${destination} is ${got} but the source is ${picture.size} bytes — ` +
+        `the output was removed, re-run the program to try again`,
+    );
+    process.exit(1);
+  }
+
+  console.log(`wrote ${destination} (${picture.size} bytes, verified)`);
 }
 
 main().catch((err) => {
