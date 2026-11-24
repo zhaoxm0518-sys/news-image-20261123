@@ -4,15 +4,13 @@
 [![rank](https://make.fun/badge/news-image-20261123/zhaoxm0518-sys/news-image-20261123/rank.svg)](https://make.fun/bounty/news-image-20261123/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261123)
 [![reward](https://make.fun/badge/news-image-20261123/zhaoxm0518-sys/news-image-20261123/reward.svg)](https://make.fun/bounty/news-image-20261123?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261123)
 
-A deterministic Node program that renders a 1024×1024 newspaper front page summing up 23 November 2026's world news — 35 stories across 7 regions: the Middle East, Europe, US politics and economy, US sports, Asia-Pacific, Africa, and climate and markets — as one image, `entry.png`.
+A one-page front page summing up 23 November 2026 in 35 stories across 7 regions — the world in one day, as a single image.
 
 ## Run it
 
 ```sh
 MAKEFUN_OUTPUT_DIR=./output node main.ts
 ```
-
-`main.ts` copies the rendered front page to `$MAKEFUN_OUTPUT_DIR/entry.png` (default `/output`). Standard library only, no network; every run writes identical bytes.
 
 ---
 
